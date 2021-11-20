@@ -1,5 +1,19 @@
 const axios = require("axios");
+const path = require("path");
+const csv = require("csv-parser");
+const fs = require("fs");
+const results=[]
 
+const restaurantMap=(getAllRestaurants)=>{
+    return getAllRestaurants.map((restaurant, index) => {
+        return {
+          Name: restaurant.Name,
+          location: restaurant.location,
+          cuisine: restaurant.cousines,
+          id: index + 1,
+        };
+      });
+}
 const callFromGoogle = async (locations, cousines) => {
   let extendCousines = Array(10).fill(cousines).flat();
   let restaurants = [];
@@ -24,9 +38,56 @@ const callFromGoogle = async (locations, cousines) => {
   }
   let locationData = allLocations[0].concat(allLocations[0]);
 
-  return locationData.map((a, index) => {
-    return { restaurant: a, id: index + 1 };
-  });
+  return locationData;
 };
 
-module.exports = { callFromGoogle };
+const callFromSpreadSheet = (
+  res,
+  dataFromGoogle,
+  location = null,
+  cuisine = null
+) => {
+if(results.length<1){
+  let exactPath = path.dirname(__filename);
+  fs.createReadStream(exactPath + "/" + "restaurants-data.csv")
+    .pipe(csv())
+    .on("data", (data) =>  results.push(data))
+    .on("end", () => {
+       
+      let getAllRestaurants = results.concat(dataFromGoogle);
+      let resdATA = restaurantMap(getAllRestaurants)
+       return res.status(200).json({total:resdATA.length, data:resdATA});
+      
+    });
+}
+else{
+  
+    let getAllRestaurants = results.concat(dataFromGoogle);
+    let resdATA = restaurantMap(getAllRestaurants)
+
+    if (cuisine !== null || location !== null) {
+      console.log(cuisine, location);
+      if (cuisine !== null && location === null) {
+        let filtered = resdATA.filter(
+          (restaurant) => restaurant.cuisine === cuisine
+        );
+        res.status(200).json({total:filtered.length, data:filtered});
+      } else if (location !== null && cuisine === null) {
+        let filtered = resdATA.filter(
+          (restaurant) => restaurant.location === location
+        );
+        res.status(200).json({total:filtered.length, data:filtered});
+      } else if (cuisine !== null && location !== null) {
+        let filtered = resdATA.filter(
+          (restaurant) =>
+            restaurant.cuisine === cuisine && restaurant.location === location
+        );
+        res.status(200).json({total:filtered.length, data:filtered});
+      }
+    } else {
+      res.status(200).json({total:resdATA.length, data:resdATA});
+    }
+}
+};
+
+module.exports = { callFromGoogle, callFromSpreadSheet };

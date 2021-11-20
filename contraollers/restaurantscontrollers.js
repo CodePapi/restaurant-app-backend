@@ -1,38 +1,39 @@
-const path = require("path");
-const csv = require("csv-parser");
-const fs = require("fs");
-const results = [];
-
 //constants
 const { locations, cousines } = require("../constants/index");
 
 //HELPERS
-const { callFromGoogle } = require("../helpers/index");
+const { callFromGoogle, callFromSpreadSheet } = require("../helpers/index");
 
 const getAllRestaurants = async (req, res) => {
-  let exactPath = path.dirname(__filename);
-  fs.createReadStream(exactPath + "/" + "sample.csv")
-    .pipe(csv())
-    .on("data", (data) => results.push(data))
-    .on("end", () => {
-      res.status(200).json(results);
-      // [
-      //   { NAME: 'Daffy Duck', AGE: '24' },
-      //   { NAME: 'Bugs Bunny', AGE: '22' }
-      // ]
-    });
-  // console.log(req)
-};
+  const{cuisine, location}=req.query
 
-const getAllRestaurantsByGoogle = async (req, res, next) => {
   try {
-   let restaurants= await callFromGoogle(locations, cousines)
+    let restaurants= await callFromGoogle(locations, cousines)
     .then((a) => a);
-
-    res.status(200).json(restaurants)
-  } catch (err) {
-    next(err);
+    callFromSpreadSheet(res, restaurants, location, cuisine)
+  } catch (error) {
+    throw Error(error)
   }
+ 
 };
 
-module.exports = { getAllRestaurants, getAllRestaurantsByGoogle };
+const getAllCuisines= async(req, res) =>{
+  try {
+    await res.status(200).json(cousines)
+  } catch (error) {
+    await res.status(400).json(error)
+  }
+}
+
+const getAllLocations= async(req, res)=>{
+  try {
+    await res.status(200).json(locations)
+  } catch (error) {
+    await res.status(400).json(error)
+  }
+}
+
+
+
+
+module.exports = { getAllRestaurants, getAllCuisines, getAllLocations};
