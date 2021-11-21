@@ -1,4 +1,6 @@
 const nodemailer = require("nodemailer");
+const dotenv=require("dotenv")
+dotenv.config();
 
 async function confirmationText(email, subject, message) {
   await nodemailer.createTestAccount();
@@ -7,8 +9,8 @@ async function confirmationText(email, subject, message) {
 
     secure: false, // true for 465, false for other ports
     auth: {
-      user: "qsolutiondev@gmail.com",
-      pass: "Major2013@",
+      user: process.env.NODEMAILER_EMAIL,
+      pass: process.env.NODEMAILER_PASSWORD,
     },
   });
 

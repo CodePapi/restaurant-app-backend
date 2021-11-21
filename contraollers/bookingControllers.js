@@ -1,4 +1,6 @@
+const dotenv = require("dotenv");
 const { Booking } = require("../models/bookingModels");
+dotenv.config();
 
 //helpers
 const {
@@ -20,7 +22,7 @@ const BookRestaurant = async (req, res) => {
   const createBooking = await booking.save();
   if (createBooking) {
     confirmationText(
-      "oshiesam@gmail.com",
+      process.env.RESTAURANT_OWNER_EMAIL ,
       "Booking Confirmation",
       bookedEmailOwner(createBooking)
     );

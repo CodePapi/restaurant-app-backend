@@ -1,3 +1,4 @@
+
 //constants
 const { locations, cousines } = require("../constants/index");
 
