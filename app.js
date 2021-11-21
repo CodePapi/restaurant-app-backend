@@ -4,11 +4,11 @@ const restaurant = require("./routes/restaurantsRoutes");
 const booking = require("./routes/bookingRoutes.js");
 const auth = require("./routes/authRoutes");
 const dotenv = require("dotenv");
-const { connectDB } = require("./config/mongoose");
+const { connectMongoDB } = require("./config/mongoose");
 const postgresSQLDB = require("./config/postgress");
 
 dotenv.config();
-connectDB();
+connectMongoDB();
 
 
 const app = express();
@@ -25,7 +25,7 @@ postgresSQLDB.sequelize.sync({ force: false })
 
 
 app.get("/", (req, res) => {
-  res.send("testing");
+  res.send("app running ");
 });
 
 module.exports = app;

@@ -1,18 +1,26 @@
 const Sequelize = require("sequelize");
-const contant=require("../constants/postgresConstants")
-const sequelize = new Sequelize(contant.DB, contant.USER, contant.PASSWORD, {
-  host: contant.HOST,
-  dialect: contant.dialect,
-  operatorsAliases: false,
+const { postgressConstants } = require("../constants/");
 
-  pool: {
-    max: contant.pool.max,
-    min: contant.pool.min,
-    acquire: contant.pool.acquire,
-    idle: contant.pool.idle,
-  },
-});
+//postgress db setup
+const sequelize = new Sequelize(
+  postgressConstants.DB,
+  postgressConstants.USER,
+  postgressConstants.PASSWORD,
+  {
+    host: postgressConstants.HOST,
+    dialect: postgressConstants.dialect,
+    operatorsAliases: false,
 
+    pool: {
+      max: postgressConstants.pool.max,
+      min: postgressConstants.pool.min,
+      acquire: postgressConstants.pool.acquire,
+      idle: postgressConstants.pool.idle,
+    },
+  }
+);
+
+//Test running
 try {
   sequelize.authenticate();
   console.log(
