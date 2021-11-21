@@ -5,7 +5,7 @@
 | API Endpoint                                            | Request type                                            | Data Collected |
 | ------------------------------------------------------- | ------------------------------------------------------- | -------------- |
 | <b>user signup</b><br/>{BaseURL}/api/auth/signup/ |`POST` | `username, email, password`                             |
-| <b>user signin</b><br/>{BaseURL} /api/auth/signim  |`POST` | `username, password, profession, whyJoin, profileImage` |
+| <b>user signin</b><br/>{BaseURL} /api/auth/signim  |`POST` | `username, password` |
 | <b>profile</b><br/>{BaseURL}/api/auth/profile |`GET`      | `Bearer Token`                                          |
 
 ##
