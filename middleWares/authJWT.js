@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const constant = require("../constants/postgresConstants");
+const {postgressConstants} = require("../constants");
 
 protect = (req, res, next) => {
   let token;
@@ -11,7 +11,7 @@ protect = (req, res, next) => {
     try {
       token = req.headers.authorization.split(" ")[1];
 
-      const decoded = jwt.verify(token, constant.secret);
+      const decoded = jwt.verify(token, postgressConstants.secret);
       req.userId = decoded.id;
 
       // req.user = await User.findById(decoded.id).select('-password')
