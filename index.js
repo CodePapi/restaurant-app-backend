@@ -1,10 +1,8 @@
-const app = require("./app")
+const app = require("./app");
 
 
-app.get("/test", (req, res)=>{
-    res.json("dsxzcDc")
-})
+const PORT = process.env.PORT || 5000;
 
-app.listen("5060", ()=>{
-    console.log('running in port 5060')
-})
+app.listen(PORT, () => {
+  console.log(`running in port ${PORT}`);
+});

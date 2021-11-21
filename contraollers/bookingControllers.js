@@ -1,9 +1,13 @@
 const { Booking } = require("../models/bookingModels");
+
+//helpers
 const {
   bookedEmailOwner,
   bookedEmailUser,
 } = require("../helpers/emails/index");
 const { confirmationText } = require("../helpers/nodeMailer/index");
+
+
 const BookRestaurant = async (req, res) => {
   const { bookedBy, restaurantData } = req.body;
 
