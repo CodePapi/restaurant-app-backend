@@ -1,7 +1,7 @@
 const db = require("../config/postgress");
 const User = db.user;
 
-checkDuplicateUsernameOrEmail = (req, res, next) => {
+const checkDuplicateUsernameOrEmail = (req, res, next) => {
   // Username
   User.findOne({
     where: {
@@ -34,8 +34,5 @@ checkDuplicateUsernameOrEmail = (req, res, next) => {
 };
 
 
-const verifySignUp = {
-  checkDuplicateUsernameOrEmail: checkDuplicateUsernameOrEmail,
-};
 
-module.exports = verifySignUp;
+module.exports = checkDuplicateUsernameOrEmail;

@@ -1,7 +1,7 @@
-const { verifySignUp } = require("../middleWares/index");
-const authJWT= require("../middleWares/authJWT")
+const checkDuplicateUsernameOrEmail  = require("../middleWares/verifySignup");
+const protect = require("../middleWares/protect")
 const express = require("express");
-const controller = require("../contraollers/usersControllers");
+const controller = require("../controllers/usersControllers");
 const router = express.Router();
 
 
@@ -16,14 +16,14 @@ const router = express.Router();
 
   router.post(
     "/signup",
-    [
-      verifySignUp.checkDuplicateUsernameOrEmail,
-    ],
+    
+      checkDuplicateUsernameOrEmail
+    ,
     controller.signup
   );
 
   router.post("/signin", controller.signin);
-  router.get("/profile", authJWT.protect, controller.userProfile);
+  router.get("/profile", protect, controller.userProfile);
 
   module.exports = router;
 
