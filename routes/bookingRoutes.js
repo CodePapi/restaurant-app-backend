@@ -3,7 +3,7 @@ const {
   BookRestaurant,
   GetMyBookings
 } = require("../contraollers/bookingControllers");
-const { authJwt } = require("../middleWares");
+const authJwt  = require("../middleWares/authJWT");
 const router = express.Router();
 
 router.post("/",authJwt.protect, BookRestaurant);
