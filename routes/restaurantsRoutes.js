@@ -3,7 +3,7 @@ const {
   getAllRestaurants,
   getAllCuisines,
   getAllLocations,
-} = require("../contraollers/restaurantscontrollers");
+} = require("../controllers/restaurantscontrollers");
 const router = express.Router();
 
 router.get("/", getAllRestaurants);

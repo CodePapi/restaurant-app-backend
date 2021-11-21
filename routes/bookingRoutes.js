@@ -1,13 +1,15 @@
 const express = require("express");
+const protect = require("../middleWares/protect")
+
 const {
   BookRestaurant,
   GetMyBookings
-} = require("../contraollers/bookingControllers");
-const authJwt  = require("../middleWares/authJWT");
+} = require("../controllers/bookingControllers");
+
 const router = express.Router();
 
-router.post("/",authJwt.protect, BookRestaurant);
-router.get("/",authJwt.protect, GetMyBookings);
+router.post("/",protect, BookRestaurant);
+router.get("/",protect, GetMyBookings);
 
 
 module.exports = router;
