@@ -1,34 +1,36 @@
 const jwt = require("jsonwebtoken");
-// const config = require("../config/postgresSQL");
-const db = require("../config/postgress");
-const User = db.user;
+const {postgressConstants} = require("../constants");
 
-const config= {
-    secret: "sugar"
-  };
+protect = (req, res, next) => {
+  let token;
 
-verifyToken = (req, res, next) => {
-  let token = req.headers["x-access-token"];
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    try {
+      token = req.headers.authorization.split(" ")[1];
 
-  if (!token) {
-    return res.status(403).send({
-      message: "No token provided!"
-    });
+      const decoded = jwt.verify(token, postgressConstants.secret);
+      req.userId = decoded.id;
+
+      // req.user = await User.findById(decoded.id).select('-password')
+
+      next();
+    } catch (error) {
+      console.error(error);
+      res.status(401);
+      throw new Error("Not authorized, token failed");
+    }
   }
 
-  jwt.verify(token, config.secret, (err, decoded) => {
-    if (err) {
-      return res.status(401).send({
-        message: "Unauthorized!"
-      });
-    }
-    req.userId = decoded.id;
-    next();
-  });
+  if (!token) {
+    res.status(401);
+    throw new Error("Not authorized, no token");
+  }
 };
 
-
 const authJwt = {
-  verifyToken: verifyToken,
+  protect: protect,
 };
 module.exports = authJwt;

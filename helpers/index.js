@@ -2,18 +2,18 @@ const axios = require("axios");
 const path = require("path");
 const csv = require("csv-parser");
 const fs = require("fs");
-const results=[]
+const results = [];
 
-const restaurantMap=(getAllRestaurants)=>{
-    return getAllRestaurants.map((restaurant, index) => {
-        return {
-          Name: restaurant.Name,
-          location: restaurant.location,
-          cuisine: restaurant.cousines,
-          id: index + 1,
-        };
-      });
-}
+const restaurantMap = (getAllRestaurants) => {
+  return getAllRestaurants.map((restaurant, index) => {
+    return {
+      Name: restaurant.Name,
+      location: restaurant.location,
+      cuisine: restaurant.cousines,
+      id: index + 1,
+    };
+  });
+};
 const callFromGoogle = async (locations, cousines) => {
   let extendCousines = Array(10).fill(cousines).flat();
   let restaurants = [];
@@ -47,23 +47,19 @@ const callFromSpreadSheet = (
   location = null,
   cuisine = null
 ) => {
-if(results.length<1){
-  let exactPath = path.dirname(__filename);
-  fs.createReadStream(exactPath + "/" + "restaurants-data.csv")
-    .pipe(csv())
-    .on("data", (data) =>  results.push(data))
-    .on("end", () => {
-       
-      let getAllRestaurants = results.concat(dataFromGoogle);
-      let resdATA = restaurantMap(getAllRestaurants)
-       return res.status(200).json({total:resdATA.length, data:resdATA});
-      
-    });
-}
-else{
-  
+  if (results.length < 1) {
+    let exactPath = path.dirname(__filename);
+    fs.createReadStream(exactPath + "/" + "restaurants-data.csv")
+      .pipe(csv())
+      .on("data", (data) => results.push(data))
+      .on("end", () => {
+        let getAllRestaurants = results.concat(dataFromGoogle);
+        let resdATA = restaurantMap(getAllRestaurants);
+        return res.status(200).json({ total: resdATA.length, data: resdATA });
+      });
+  } else {
     let getAllRestaurants = results.concat(dataFromGoogle);
-    let resdATA = restaurantMap(getAllRestaurants)
+    let resdATA = restaurantMap(getAllRestaurants);
 
     if (cuisine !== null || location !== null) {
       console.log(cuisine, location);
@@ -71,23 +67,23 @@ else{
         let filtered = resdATA.filter(
           (restaurant) => restaurant.cuisine === cuisine
         );
-        res.status(200).json({total:filtered.length, data:filtered});
+        res.status(200).json({ total: filtered.length, data: filtered });
       } else if (location !== null && cuisine === null) {
         let filtered = resdATA.filter(
           (restaurant) => restaurant.location === location
         );
-        res.status(200).json({total:filtered.length, data:filtered});
+        res.status(200).json({ total: filtered.length, data: filtered });
       } else if (cuisine !== null && location !== null) {
         let filtered = resdATA.filter(
           (restaurant) =>
             restaurant.cuisine === cuisine && restaurant.location === location
         );
-        res.status(200).json({total:filtered.length, data:filtered});
+        res.status(200).json({ total: filtered.length, data: filtered });
       }
     } else {
-      res.status(200).json({total:resdATA.length, data:resdATA});
+      res.status(200).json({ total: resdATA.length, data: resdATA });
     }
-}
+  }
 };
 
 module.exports = { callFromGoogle, callFromSpreadSheet };

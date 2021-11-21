@@ -11,7 +11,7 @@ const { confirmationText } = require("../helpers/nodeMailer/index");
 const BookRestaurant = async (req, res) => {
   const { bookedBy, restaurantData } = req.body;
 
-  const userId = 1;
+  const userId = req.userId;
   const booking = new Booking({
     bookedBy,
     restaurantData,
@@ -36,9 +36,7 @@ const BookRestaurant = async (req, res) => {
 };
 
 const GetMyBookings = async (req, res) => {
-  // const {id}=req.user
-  const id = 2;
-  const myBooked = await Booking.find({ userId: id });
+  const myBooked = await Booking.find({ userId: req.userId});
 
   if (myBooked) {
     res.status(201).json(myBooked);
