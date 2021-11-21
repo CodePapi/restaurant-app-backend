@@ -2,6 +2,8 @@ const axios = require("axios");
 const path = require("path");
 const csv = require("csv-parser");
 const fs = require("fs");
+const dotenv=require("dotenv")
+dotenv.config();
 const results = [];
 
 const restaurantMap = (getAllRestaurants) => {
@@ -18,7 +20,7 @@ const callFromGoogle = async (locations, cousines) => {
   let extendCousines = Array(10).fill(cousines).flat();
   let restaurants = [];
   let allLocations = [];
-  const key = "AIzaSyDycYHuYgJZxM3k2hBOGl_W8kg4_fshYNc";
+  const key =  process.env.GOOGLE_PLACES_KEY;
   for (let x = 0; x < locations.length; x++) {
     const { data } = await axios.get(
       `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${locations[x]}&type=restaurant&key=${key}`
