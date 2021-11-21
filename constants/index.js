@@ -1,4 +1,6 @@
- const locations = [
+const dotenv = require("dotenv");
+dotenv.config();
+const locations = [
     "lagos",
     "abuja",
     "port harcourt",
@@ -23,18 +25,13 @@ const  cousines = [
     "chinese fries",
     "fried fish",
   ];
-  // This is the only time you will be able to view this password. Copy and save the password for your reference, otherwise you will need to modify the database to change it.
-  // Master username
-  // postgres
-  // Master password
-  // 07087126706
 
   const postgressConstants={
-  secret:"sugar",
-  HOST: "database-2.c0awgonjlzh2.us-east-2.rds.amazonaws.com",
-  USER: "postgres",
-  PASSWORD: "07087126706",
-  DB: "postgres",
+  secret:process.env.JWT_SECRET,
+  HOST: process.env.POSTGRES_HOST,
+  USER: process.env.POSTGRES_USER,
+  PASSWORD: process.env.POSTGRES_PASSWORD,
+  DB: process.env.POSTGRES_DB,
   dialect: "postgres",
   pool: {
     max: 5,
