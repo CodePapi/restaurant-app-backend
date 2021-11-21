@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
-const {postgressConstants} = require("../constants");
+const { postgressConstants } = require("../constants");
 
-protect = (req, res, next) => {
+const protect = (req, res, next) => {
   let token;
 
   if (
@@ -29,8 +29,4 @@ protect = (req, res, next) => {
     throw new Error("Not authorized, no token");
   }
 };
-
-const authJwt = {
-  protect: protect,
-};
-module.exports = authJwt;
+module.exports = protect;
