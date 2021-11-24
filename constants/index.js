@@ -9,7 +9,7 @@ const locations = [
     "dubai",
     "new york",
     "washington  dc",
-    "califonia",
+    "california",
     "ontario",
   ];
   
