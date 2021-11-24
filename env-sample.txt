@@ -1,0 +1,13 @@
+MONGO_URI =                 
+JWT_SECRET =                
+POSTGRES_HOST =             
+POSTGRES_USER =             
+POSTGRES_PASSWORD =         
+POSTGRES_DB =               
+PORT=                       
+RESTAURANT_OWNER_EMAIL =    
+NODEMAILER_EMAIL=           
+NODEMAILER_PASSWORD =       
+GOOGLE_PLACES_KEY=          
+
+
